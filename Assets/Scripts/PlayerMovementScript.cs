@@ -9,19 +9,36 @@ public class PlayerMovementScript : MonoBehaviour
     private Animator animator;
     private float dirX = 0f;
     private SpriteRenderer sr;
-    private bool isMoving = false;
     private BoxCollider2D coll;
+    public Transform AttackZone;
+    public float attackRange = .62f;
+    public LayerMask enemyLayers;
 
-    public GameObject AttackZone;
+    [SerializeField] private int strength;
+    [SerializeField] private int agility;
+    [SerializeField] private int dexterity;
+
+
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpForce = 3.5f;
+    [SerializeField] private int damage;
     [SerializeField] private LayerMask solidGround;
+
+    private enum MovementState { idle, running, jumping, falling, attacking, comboAttacking };
+    private MovementState state;
 
     // Start is called before the first frame update
     void Start()
     {
-        AttackZone = transform.GetChild(0).gameObject;
-        AttackZone.SetActive(false);
+        strength = 5;
+        agility = 5;
+        dexterity = 5;
+
+        moveSpeed = agility * 1 + 3;
+        jumpForce = (dexterity * .5f) + 2;
+        damage = strength * 10;
+
+
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
@@ -42,90 +59,87 @@ public class PlayerMovementScript : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
 
-            UpdateAttackState();
-            UpdateRunningState();
-            UpdateJumpingState();
+            UpdateAnimationState();
         }
     }
 
-    private void UpdateAttackState()
+    private void UpdateAnimationState()
     {
+        //MovementState state;
+
+        
+
         if (Input.GetButtonDown("Fire1"))
         {
-
-            StartCoroutine(Attack());
-
+            Attack();
         }
-        if (Input.GetButtonDown("Fire2") && !isMoving){
-            StartCoroutine(DoubleAttack());
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            DoubleAttack();
         } 
-
-    }
-
-    private void UpdateJumpingState()
-    {
-        if(rb.velocity.y > .1f)
-        {
-            animator.SetBool("IsJumping", true);
-        } 
-        else if (IsGrounded())
-        {
-            animator.SetBool("IsJumping", false);
-        }
-    }
-
-    private void UpdateRunningState()
-    {
-        if (dirX > 0f)
-        {
-            animator.SetBool("IsMoving", true);
-            sr.flipX = false;
-            isMoving = true;
-        }
-        else if (dirX < 0)
-        {
-            animator.SetBool("IsMoving", true);
-            sr.flipX = true;
-            isMoving = true;
-        }
         else
         {
-            animator.SetBool("IsMoving", false);
-            isMoving = false;
+            if (dirX > 0f)
+            {
+                state = MovementState.running;
+                gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            }
+            else if (dirX < 0)
+            {
+                state = MovementState.running;
+                gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+            }
+            else
+            {
+                state = MovementState.idle;
+            }
+
+            if (rb.velocity.y > .1f)
+            {
+                state = MovementState.jumping;
+            }
+            else if (rb.velocity.y < -.1f)
+            {
+                state = MovementState.falling;
+            }
+        }
+
+        animator.SetInteger("state", (int)state);
+    }
+
+    private void Attack()
+    {
+        state = MovementState.attacking;
+        animator.SetInteger("state", (int)state);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackZone.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(damage);
         }
     }
 
-    IEnumerator Attack()
+    private void DoubleAttack()
     {
-        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-        AttackZone.SetActive(true);
-        animator.SetBool("IsAttacking", true);
-        moveSpeed = 0;
-        yield return new WaitForSeconds(.35f);
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        animator.SetBool("IsAttacking", false);
-        moveSpeed = 8f;
-        AttackZone.SetActive(false);
-    }
-
-    IEnumerator DoubleAttack()
-    {
-        rb.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-        AttackZone.SetActive(true);
-        animator.SetBool("IsDoubleAttacking", true);
-        moveSpeed = 0;
-        yield return new WaitForSeconds(.5f);
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        animator.SetBool("IsDoubleAttacking", false);
-        moveSpeed = 8f;
-        AttackZone.SetActive(false);
-
+        state = MovementState.comboAttacking;
+        animator.SetInteger("state", (int)state);
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(AttackZone.position, attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<Enemy>().TakeDamage(damage*2);
+        }
     }
 
     private bool IsGrounded()
     {
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, solidGround);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if(AttackZone == null)
+        {
+            return;
+        }
+        Gizmos.DrawWireSphere(AttackZone.position, attackRange);
     }
 }
