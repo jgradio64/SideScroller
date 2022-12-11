@@ -1773,7 +1773,7 @@ GameObject:
   - component: {fileID: 721789953}
   m_Layer: 3
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16511,6 +16511,14 @@ PrefabInstance:
     - target: {fileID: 7371533507768407857, guid: 91304153d49e3ac4cbd1114b939ba968, type: 3}
       propertyPath: m_Name
       value: Skelly
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371533507768407857, guid: 91304153d49e3ac4cbd1114b939ba968, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371533507768407858, guid: 91304153d49e3ac4cbd1114b939ba968, type: 3}
+      propertyPath: m_FlipX
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7371533507768407861, guid: 91304153d49e3ac4cbd1114b939ba968, type: 3}
       propertyPath: m_RootOrder

@@ -77,7 +77,6 @@ GameObject:
   - component: {fileID: 7371533508014058865}
   - component: {fileID: 7371533507768407862}
   - component: {fileID: 7371533507768407865}
-  - component: {fileID: 7371533507768407863}
   m_Layer: 7
   m_Name: Skelly
   m_TagString: Player
@@ -243,23 +242,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1.5}
   m_Direction: 0
---- !u!114 &7371533507768407863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7371533507768407857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f29bf01c544d34fbe8049c3f0a9d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  detectionRange: 0
-  detectionSpeed: 0
-  playerLayerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &7371533507831324262
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +252,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7371533507831324265}
   - component: {fileID: 7371533507831324264}
+  - component: {fileID: 1931602609001362889}
+  - component: {fileID: 5046383564866325754}
   m_Layer: 0
   m_Name: DetectionZone
   m_TagString: Untagged
@@ -285,7 +269,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7371533507831324262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5, y: 0, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -318,3 +302,41 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1931602609001362889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7371533507831324262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64f29bf01c544d34fbe8049c3f0a9d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRange: 5
+  detectionSpeed: 0
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!50 &5046383564866325754
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7371533507831324262}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

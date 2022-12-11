@@ -52,9 +52,9 @@ public class PatrolScript: MonoBehaviour
     private void FaceEnemy(float waypointX)
     {
         if(waypointX > transform.position.x)
-            gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f); 
+            gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f); 
         else
-            gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
     }
 
     IEnumerator PatrolWait()

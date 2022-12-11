@@ -34,7 +34,7 @@ public class PlayerMovementScript : MonoBehaviour
         agility = 5;
         dexterity = 5;
 
-        moveSpeed = agility * 1 + 3;
+        moveSpeed = (agility * 1) + 3;
         jumpForce = (dexterity * .5f) + 2;
         damage = strength * 10;
 
@@ -65,10 +65,6 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void UpdateAnimationState()
     {
-        //MovementState state;
-
-        
-
         if (Input.GetButtonDown("Fire1"))
         {
             Attack();
