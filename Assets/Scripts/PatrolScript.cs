@@ -1,41 +1,34 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class PatrolScript: MonoBehaviour
 {
-    [SerializeField] private float runSpeed = 6f;
     [SerializeField] private float walkSpeed = 2f;
-    private Vector3 targetPosition;
-    public Transform player;
-    private Animator animator;
-
+    [SerializeField] private int waitTime = 5;
     [SerializeField] GameObject[] patrolWaypoints;
+
+    private int currentWaypointIndex;
     private Vector3 nextWaypoint;
+    private Animator animator;
     private bool isWaiting;
-    int currentWaypointIndex;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(transform.position, GetWaypointPosition()) < .05f)
+        if (Vector3.Distance(transform.position, GetWaypointPosition()) < .05f && !isWaiting)
         {
-            SetNextWaypoint();
-        }
-        else
+            StartCoroutine(PatrolWait());
+        } 
+        else if(!isWaiting)
         {
             transform.position = Vector3.MoveTowards(transform.position, GetWaypointPosition(), walkSpeed * Time.deltaTime);
             animator.SetBool("IsPatrolling", true);
         }
-
-
     }
 
     private Vector3 GetWaypointPosition()
@@ -59,25 +52,20 @@ public class EnemyMovement : MonoBehaviour
     private void FaceEnemy(float waypointX)
     {
         if(waypointX > transform.position.x)
-        {
-            gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        } 
+            gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f); 
         else
-        {
             gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-
-        }
     }
 
-    //IEnumerator PatrolWait()
-    //{
-    //    animator.SetBool("IsWaiting", true);
-    //    animator.SetBool("IsPatrolling", false);
-    //    isWaiting = true;
-    //    yield return new WaitForSeconds(5);
-    //    animator.SetBool("IsWaiting", false);
-    //    animator.SetBool("IsPatrolling", true);
-    //    isWaiting = false;
-    //    SetNextWaypoint()
-    //}
+    IEnumerator PatrolWait()
+    {
+        animator.SetBool("IsWaiting", true);
+        animator.SetBool("IsPatrolling", false);
+        isWaiting = true;
+        yield return new WaitForSeconds(waitTime);
+        animator.SetBool("IsWaiting", false);
+        animator.SetBool("IsPatrolling", true);
+        isWaiting = false;
+        SetNextWaypoint();
+    }
 }
