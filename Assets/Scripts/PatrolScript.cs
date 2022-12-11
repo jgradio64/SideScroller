@@ -8,6 +8,7 @@ public class PatrolScript: MonoBehaviour
     [SerializeField] private int waitTime = 5;
     [SerializeField] GameObject[] patrolWaypoints;
 
+    public Enemy EnemyScript;
     private int currentWaypointIndex;
     private Vector3 nextWaypoint;
     private Animator animator;
@@ -20,15 +21,22 @@ public class PatrolScript: MonoBehaviour
 
     void Update()
     {
-        if (Vector3.Distance(transform.position, GetWaypointPosition()) < .05f && !isWaiting)
+        if (EnemyScript.IsDead)
         {
-            StartCoroutine(PatrolWait());
-        } 
-        else if(!isWaiting)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, GetWaypointPosition(), walkSpeed * Time.deltaTime);
-            animator.SetBool("IsPatrolling", true);
+            return;
         }
+        if (!EnemyScript.PlayerDetected)
+        {
+            if (Vector3.Distance(transform.position, GetWaypointPosition()) < .05f && !isWaiting)
+            {
+                StartCoroutine(PatrolWait());
+            } 
+            else if(!isWaiting)
+            {
+                animator.SetBool("IsPatrolling", true);
+                transform.position = Vector3.MoveTowards(transform.position, GetWaypointPosition(), walkSpeed * Time.deltaTime);
+            }
+        }        
     }
 
     private Vector3 GetWaypointPosition()

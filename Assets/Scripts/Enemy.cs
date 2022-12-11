@@ -8,10 +8,9 @@ public class Enemy: MonoBehaviour
     public int currentHealth = 100;
     private Animator animator;
     private Rigidbody2D rb;
-    BoxCollider2D mobBoxCollider;
-
-
-
+    CapsuleCollider2D mobCollider;
+    public bool PlayerDetected { get; set; }
+    public bool IsDead;
 
     // Start is called before the first frame update
     void Start()
@@ -19,35 +18,26 @@ public class Enemy: MonoBehaviour
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        mobBoxCollider = GetComponent<BoxCollider2D>();
+        mobCollider = GetComponent<CapsuleCollider2D>();
     }
 
     private void Update()
     {
-        //if (dirX > 0f)
-        //{
-        //    state = MovementState.running;
-        //    gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-        //}
-        //else if (dirX < 0)
-        //{
-        //    state = MovementState.running;
-        //    gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-        //}
+        if (PlayerDetected)
+        {
+            Debug.Log("PlayerDetected");
+        }
     }
 
-    // Update is called once per frame
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
         Hit();
-        if(currentHealth <= 0)
+        if(currentHealth <= 0 && !IsDead)
         {
             Die();
         }
     }
-
-
 
     void Hit()
     {
@@ -56,9 +46,10 @@ public class Enemy: MonoBehaviour
 
     void Die()
     {
+        IsDead = true;
         animator.SetBool("IsDead", true);
         GetComponent<Rigidbody2D>().gravityScale = 0.0f; 
-        mobBoxCollider.enabled = false;
+        mobCollider.enabled = false;
         this.enabled = false;
     }
 }

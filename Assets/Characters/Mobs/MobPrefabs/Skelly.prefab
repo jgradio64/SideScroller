@@ -77,6 +77,7 @@ GameObject:
   - component: {fileID: 7371533508014058865}
   - component: {fileID: 7371533507768407862}
   - component: {fileID: 7371533507768407865}
+  - component: {fileID: 3090576981708362828}
   m_Layer: 7
   m_Name: Skelly
   m_TagString: Player
@@ -226,6 +227,7 @@ MonoBehaviour:
   patrolWaypoints:
   - {fileID: 0}
   - {fileID: 0}
+  EnemyScript: {fileID: 0}
 --- !u!70 &7371533507768407865
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -242,6 +244,21 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1.5}
   m_Direction: 0
+--- !u!114 &3090576981708362828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7371533507768407857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c189e9ce29a19746ae0ff8cc2e89a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyScript: {fileID: 7371533508014058865}
+  runSpeed: 5
+  Target: {fileID: 0}
 --- !u!1 &7371533507831324262
 GameObject:
   m_ObjectHideFlags: 0

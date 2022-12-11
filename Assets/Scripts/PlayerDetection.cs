@@ -11,10 +11,10 @@ public class PlayerDetection : MonoBehaviour
     [SerializeField] LayerMask playerLayerMask;
     public bool PlayerVisible { get; private set; }
 
+
     void Start()
     {
         PlayerVisible = false;
-
         SetDetector();
     }
     
@@ -22,14 +22,18 @@ public class PlayerDetection : MonoBehaviour
     {
         if (PlayerVisible)
         {
-            // Update the main skelly file to chase the player
+            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = true;
+        } 
+        else
+        {
+            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = false;
         }
     }
 
     void SetDetector()
     {
         gameObject.transform.localScale = new Vector3(detectionRange, 1f, 1f);
-        float detectionSize = detectionRange/2f;
+        float detectionSize = detectionRange/2f - .5f;
         gameObject.transform.localPosition = new Vector3(detectionSize, 0f, 0f);
     }
 
