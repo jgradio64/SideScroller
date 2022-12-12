@@ -9155,8 +9155,8 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 538007534986070567, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
-      propertyPath: chaseSpeed
-      value: 2
+      propertyPath: ClosingDistance
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3035317967684946585, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
       propertyPath: AttackCooldown
@@ -9164,6 +9164,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3035317967684946585, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
       propertyPath: TimerForNextAttack
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3988749141484481442, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
+      propertyPath: detectionRange
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5465257545616656730, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
@@ -9176,7 +9180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465257545616656734, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.978
+      value: -3.47
       objectReference: {fileID: 0}
     - target: {fileID: 5465257545616656734, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -9212,6 +9216,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465257545616656734, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465257545687957506, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465257545687957506, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465257545687957506, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465257545687957506, guid: a51964f2b1e16484d9fc32c4a96f81a7, type: 3}
+      propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

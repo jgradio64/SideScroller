@@ -183,9 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c189e9ce29a19746ae0ff8cc2e89a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyScript: {fileID: 5465257545876435738}
-  runSpeed: 4
-  Target: {fileID: 0}
+  chaseSpeed: 2
+  isFastChaser: 0
 --- !u!1 &5465257545687957517
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,9 +306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc97e51b3d0723e469e5e5f5ce040769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyScript: {fileID: 5465257545876435738}
-  readyToAttack: 0
-  player: {fileID: 0}
+  TimerForNextAttack: 0
+  AttackCooldown: 0
 --- !u!58 &8555533112081477867
 CircleCollider2D:
   m_ObjectHideFlags: 0
