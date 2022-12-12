@@ -55,4 +55,13 @@ public class AttackScript : MonoBehaviour
             destr.GetComponent<Destructable>().HitDesctructable();
         }
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (AttackZone == null)
+        {
+            return;
+        }
+        Gizmos.DrawWireSphere(AttackZone.position, reach);
+    }
 }
