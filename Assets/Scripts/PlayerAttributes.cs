@@ -12,5 +12,12 @@ namespace Assets.Scripts
         public static int strength { get; set; }
         public static int agility { get; set; }
         public static int dexterity { get; set; }
+
+        public static void ResetAttributes()
+        {
+            PlayerAttributes.strength = 5;
+            PlayerAttributes.agility = 5;
+            PlayerAttributes.dexterity = 5;
+        }
     }
 }
