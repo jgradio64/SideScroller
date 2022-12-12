@@ -11,7 +11,6 @@ public class PlayerDetection : MonoBehaviour
     [SerializeField] LayerMask playerLayerMask;
     public bool PlayerVisible { get; private set; }
 
-
     void Start()
     {
         PlayerVisible = false;
@@ -20,27 +19,21 @@ public class PlayerDetection : MonoBehaviour
     
     void Update()
     {
-        if (PlayerVisible)
-        {
-            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = true;
-        } 
-        else
-        {
-            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = false;
-        }
+
     }
 
     void SetDetector()
     {
         gameObject.transform.localScale = new Vector3(detectionRange, 1f, 1f);
         float detectionSize = detectionRange/2f - .5f;
-        gameObject.transform.localPosition = new Vector3(detectionSize, 0f, 0f);
+        gameObject.transform.localPosition = new Vector3(detectionSize, 0.75f, 0f);
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if(col.CompareTag("Player")){
             PlayerVisible = true;
+            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = true;
         }        
     }
 
@@ -48,6 +41,7 @@ public class PlayerDetection : MonoBehaviour
     {
         if(col.CompareTag("Player")){
             PlayerVisible = false;
+            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = false;
         }
     }
 }
