@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class AttackZone : MonoBehaviour
 {
-    public Enemy EnemyScript;
-    public bool readyToAttack;
-    Animator animator;
-    public Player player;
-    float TimerForNextAttack, Cooldown;
+    [SerializeField] float TimerForNextAttack;
+    [SerializeField] float AttackCooldown;
 
+    private GameObject parentGO;
+    private Enemy EnemyScript;
+    private bool readyToAttack;
+    private Animator animator;
+    private Player player;
+    
     void Start()
     {
+        parentGO = this.transform.parent.gameObject;
+        EnemyScript = parentGO.GetComponent<Enemy>();
+        player = GameObject.Find("Player").GetComponent<Player>();
         animator =  this.transform.parent.gameObject.GetComponent<Animator>();
-        Cooldown = 3;
-        TimerForNextAttack = Cooldown;
+        AttackCooldown = 3;
+        TimerForNextAttack = AttackCooldown;
     }
 
     void Update()
@@ -28,15 +34,9 @@ public class AttackZone : MonoBehaviour
             else if (TimerForNextAttack <= 0)
             {
                 Attack();
-                TimerForNextAttack = Cooldown;
+                TimerForNextAttack = AttackCooldown;
             }
         }
-
-        if (player.IsDead)
-        {
-            EnemyScript.CanAttackPlayer = false;
-        }
-
     }
 
     void OnTriggerEnter2D(Collider2D col)
