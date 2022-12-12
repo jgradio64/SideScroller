@@ -10,10 +10,8 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpForce = 3.5f;
     [SerializeField] private float slopeCheckDistance;
-    [SerializeField] private int damage;
+    [SerializeField] private float isGroundedRadius;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private LayerMask enemyLayers;
-    [SerializeField] private LayerMask destructableLayers;
     [SerializeField] private Transform GroundCheck;
     [SerializeField] private PhysicsMaterial2D noFriction;
     [SerializeField] private PhysicsMaterial2D fullFriction;
@@ -21,12 +19,12 @@ public class PlayerMovementScript : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private CapsuleCollider2D cc;
-    public Transform AttackZone;
 
     public float attackRange = .62f;
     private float slopeDownAngle;
     private float slopeDownAngleOld;
     private float dirX = 0f;
+    private float slopeSideAngle;
 
     private bool isJumping;
     private bool canJump;
@@ -47,14 +45,12 @@ public class PlayerMovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerAttributes.strength = 5;
-        PlayerAttributes.agility = 5;
-        PlayerAttributes.dexterity = 5;
-
+        if(PlayerAttributes.agility == 0)
+        {
+            PlayerAttributes.ResetAttributes();
+        }
         moveSpeed = (PlayerAttributes.agility * 1) + 3;
-        jumpForce = (PlayerAttributes.dexterity * .5f) + 2;
-        damage = PlayerAttributes.strength * 10;
-
+        jumpForce = (PlayerAttributes.dexterity * .5f) + 3;
 
         rb = GetComponent<Rigidbody2D>();
         cc = GetComponent<CapsuleCollider2D>();
@@ -89,20 +85,47 @@ public class PlayerMovementScript : MonoBehaviour
     {
         Vector2 checkPosition = transform.position - new Vector3(0f, colliderSize.y / 2);
         SlopeCheckVertical(checkPosition);
+        SlopeCheckHorizontal(checkPosition);
     }
 
     private void SlopeCheckHorizontal(Vector2 checkPosition)
     {
+        RaycastHit2D frontHit = Physics2D.Raycast(checkPosition, transform.right, slopeCheckDistance, groundLayer);
+        RaycastHit2D backHit = Physics2D.Raycast(checkPosition, -transform.right, slopeCheckDistance, groundLayer);
 
-    }    
-    
+        if (frontHit)
+        {
+            isOnSlope = true;
+            slopeSideAngle = Vector2.Angle(frontHit.normal, Vector2.up);
+        }
+        else if (backHit) 
+        {
+            isOnSlope = true;
+            slopeSideAngle = Vector2.Angle(backHit.normal, Vector2.up);
+        }
+        else
+        {
+            slopeSideAngle = 0.0f;
+            isOnSlope = false;
+        }
+
+        if(isOnSlope && dirX == 0.0f)
+        {
+            rb.sharedMaterial = fullFriction;
+        } 
+        else
+        {
+            rb.sharedMaterial = noFriction;
+        }
+    }
+
     private void SlopeCheckVertical(Vector2 checkPosition)
     {
         RaycastHit2D hit = Physics2D.Raycast(checkPosition, Vector2.down, slopeCheckDistance, groundLayer);
 
         if (hit)
         {
-            slopeNormalPerp = Vector2.Perpendicular(hit.normal);
+            slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
             slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
 
             if(slopeDownAngle != slopeDownAngleOld)
@@ -124,7 +147,7 @@ public class PlayerMovementScript : MonoBehaviour
         {
             dirX = Input.GetAxisRaw("Horizontal");
 
-            // Flipping the way a character faces
+            // Flipping the way a character faces. I used Scale for some reason. IDK.
             if (dirX > 0f)
             {
                 gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
@@ -161,8 +184,7 @@ public class PlayerMovementScript : MonoBehaviour
             rb.velocity = newVelocity;
         } 
 
-        
-
+        // Check if the user if not mobing
         if(rb.velocity.x == 0 && rb.velocity.y == 0){
             state = MovementState.idle;
         }
@@ -198,7 +220,7 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void IsGrounded()
     {
-        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, 0.15f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(GroundCheck.position, isGroundedRadius, groundLayer);
 
         if (rb.velocity.y <= 0.0f)
         {
@@ -216,17 +238,10 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if(AttackZone == null)
-        {
-            return;
-        }
-        Gizmos.DrawWireSphere(AttackZone.position, attackRange);
-    }
+
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(GroundCheck.position, .015f);
+        Gizmos.DrawWireSphere(GroundCheck.position, isGroundedRadius);
     }
 }
