@@ -136,7 +136,6 @@ public class PlayerMovementScript : MonoBehaviour
 
             if (Input.GetButtonDown("Jump"))
             {
-                Debug.Log("Try to jump");
                 Jump();
             }
         }
@@ -173,8 +172,6 @@ public class PlayerMovementScript : MonoBehaviour
     {
         if (canJump)
         {
-            Debug.Log("Jumping");
-            
             newVelocity.Set(0.0f, 0.0f);
             rb.velocity = newVelocity;
             newForce.Set(0.0f, jumpForce);
