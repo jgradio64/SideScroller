@@ -39,7 +39,7 @@ public class AttackZone : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerStay2D(Collider2D col)
     {
         if(col.CompareTag("Player")){
             readyToAttack = true;
@@ -58,6 +58,6 @@ public class AttackZone : MonoBehaviour
     public void Attack()
     {
         animator.SetTrigger("Attack");
-        player.TakeDamage(EnemyScript.damage);
+        player.TakeDamage(EnemyScript.strength * 10);
     }
 }

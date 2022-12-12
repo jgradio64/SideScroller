@@ -8,14 +8,14 @@ public class PatrolScript: MonoBehaviour
     [SerializeField] private int waitTime = 5;
     [SerializeField] GameObject[] patrolWaypoints;
 
-    public Enemy EnemyScript;
+    private Enemy EnemyScript;
     private int currentWaypointIndex;
-    private Vector3 nextWaypoint;
     private Animator animator;
     private bool isWaiting;
 
     void Start()
     {
+        EnemyScript = this.GetComponent<Enemy>();
         animator = GetComponent<Animator>();
     }
 

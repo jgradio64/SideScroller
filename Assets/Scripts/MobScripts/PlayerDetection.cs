@@ -10,16 +10,13 @@ public class PlayerDetection : MonoBehaviour
     [SerializeField] private float detectionSpeed;
     [SerializeField] LayerMask playerLayerMask;
     public bool PlayerVisible { get; private set; }
+    private Enemy EnemyScript;
 
     void Start()
     {
+        EnemyScript = transform.parent.gameObject.GetComponent<Enemy>();
         PlayerVisible = false;
         SetDetector();
-    }
-    
-    void Update()
-    {
-
     }
 
     void SetDetector()
@@ -33,7 +30,7 @@ public class PlayerDetection : MonoBehaviour
     {
         if(col.CompareTag("Player")){
             PlayerVisible = true;
-            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = true;
+            EnemyScript.PlayerDetected = true;
         }        
     }
 
@@ -41,7 +38,7 @@ public class PlayerDetection : MonoBehaviour
     {
         if(col.CompareTag("Player")){
             PlayerVisible = false;
-            transform.parent.gameObject.GetComponent<Enemy>().PlayerDetected = false;
+            EnemyScript.PlayerDetected = false;
         }
     }
 }

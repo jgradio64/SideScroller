@@ -20,8 +20,9 @@ public class ChasePlayer : MonoBehaviour
     {
         closeEnough = false;
         EnemyScript = this.GetComponent<Enemy>();
-        AcquireTarget();
         animator = GetComponent<Animator>();
+
+        AcquireTarget();
     }
 
     // Update is called once per frame
