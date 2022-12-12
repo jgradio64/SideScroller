@@ -40,11 +40,16 @@ public class PlayerMovementScript : MonoBehaviour
     private enum MovementState { idle, running, jumping, falling, attacking, comboAttacking, dead };
     private MovementState state;
 
+    private void Awake()
+    {
+        if (ZeroedAttributes()) PlayerAttributes.ResetAttributes();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         player = GetComponent<Player>();
-        if(ZeroedAttributes()) PlayerAttributes.ResetAttributes();
+        AS = this.GetComponent<AttackScript>();
 
         moveSpeed = (PlayerAttributes.agility * 1) + 3;
         jumpForce = (PlayerAttributes.dexterity * .5f) + 3;

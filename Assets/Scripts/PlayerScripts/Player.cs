@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     void Die()
     {
         IsDead = true;
+        healthBar.gameObject.SetActive(false);
         animator.SetTrigger("Death");
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
     }
