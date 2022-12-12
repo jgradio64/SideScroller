@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerMovementScript : MonoBehaviour
 {
 
-    [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float jumpForce = 3.5f;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpForce;
     [SerializeField] private float slopeCheckDistance;
     [SerializeField] private float isGroundedRadius;
     [SerializeField] private LayerMask groundLayer;
@@ -19,8 +19,9 @@ public class PlayerMovementScript : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private CapsuleCollider2D cc;
+    private Player player;
+    private AttackScript AS;
 
-    public float attackRange = .62f;
     private float slopeDownAngle;
     private float slopeDownAngleOld;
     private float dirX = 0f;
@@ -30,9 +31,6 @@ public class PlayerMovementScript : MonoBehaviour
     private bool canJump;
     private bool isGrounded;
     private bool isOnSlope;
-
-    public Player player;
-    private AttackScript AS;
 
     private Vector2 newVelocity;
     private Vector2 newForce;
@@ -45,6 +43,7 @@ public class PlayerMovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GetComponent<Player>();
         if(ZeroedAttributes()) PlayerAttributes.ResetAttributes();
 
         moveSpeed = (PlayerAttributes.agility * 1) + 3;
