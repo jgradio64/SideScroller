@@ -14,7 +14,7 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
+  - Destructables
   - 
   - 
   - 
@@ -53,4 +53,7 @@ TagManager:
     locked: 0
   - name: Foreground
     uniqueID: 2231744153
+    locked: 0
+  - name: Wallpaper
+    uniqueID: 363090309
     locked: 0
