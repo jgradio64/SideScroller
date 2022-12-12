@@ -45,10 +45,8 @@ public class PlayerMovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(PlayerAttributes.agility == 0)
-        {
-            PlayerAttributes.ResetAttributes();
-        }
+        if(ZeroedAttributes()) PlayerAttributes.ResetAttributes();
+
         moveSpeed = (PlayerAttributes.agility * 1) + 3;
         jumpForce = (PlayerAttributes.dexterity * .5f) + 3;
 
@@ -238,7 +236,16 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
+    private bool ZeroedAttributes()
+    {
+        bool needToReset = false;
 
+        if (PlayerAttributes.strength == 0) needToReset = true;
+        else if (PlayerAttributes.agility == 0) needToReset = true;
+        else if (PlayerAttributes.dexterity == 0) needToReset = true;
+
+        return needToReset;
+    }
 
     private void OnDrawGizmos()
     {
