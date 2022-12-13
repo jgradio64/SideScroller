@@ -1,4 +1,4 @@
-# Sword Hero
+# Dungeon Hero
 ## _The Last Markdown Editor, Ever_
 
 ## Tools
