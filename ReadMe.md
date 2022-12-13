@@ -37,3 +37,6 @@ While I did not explicity follow a tutorial, I did look up some videos for refer
 - [Cave assets.](https://anokolisa.itch.io/fantasy-pack-vli-deep-cave)
 - [Skelly (the best skeleton ever) a mob sprite.](https://anokolisa.itch.io/castle-prison)
 - [Shopkeeper, which is unused so far (time constraints).](https://ansimuz.itch.io/gothicvania-town)
+- [Background Music!](https://assetstore.unity.com/packages/audio/music/medieval-music-pack-vol-2-233785)
+- [Footstep SFX](https://assetstore.unity.com/packages/audio/sound-fx/classic-footstep-sfx-173668)
+- [Hit Sound effects](https://assetstore.unity.com/packages/audio/sound-fx/blades-bludgeoning-free-sample-pack-179306)
