@@ -202,6 +202,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
         else if (!isGrounded)
         {
+            RunSoudEffect.Stop();
             newVelocity.Set(dirX * moveSpeed, rb.velocity.y);
             rb.velocity = newVelocity;
         }

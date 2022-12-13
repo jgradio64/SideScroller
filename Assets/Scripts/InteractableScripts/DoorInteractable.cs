@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class DoorInteractable : MonoBehaviour
 {
     private bool OnTravel;
-    [SerializeField] private SceneAsset NextScene;
+    [SerializeField] private string NextSceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,7 @@ public class DoorInteractable : MonoBehaviour
         if (Input.GetKeyDown("s") && OnTravel)
         {
             // Load the next Scene
-            SceneManager.LoadScene(NextScene.name);
+            SceneManager.LoadScene(NextSceneName);
         }
 
     }
