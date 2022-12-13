@@ -31,6 +31,8 @@ public class PlayerMovementScript : MonoBehaviour
     private bool canJump;
     private bool isGrounded;
     private bool isOnSlope;
+    private bool canCombo;
+    private bool canAttack;
 
     private Vector2 newVelocity;
     private Vector2 newForce;
@@ -48,6 +50,7 @@ public class PlayerMovementScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         player = GetComponent<Player>();
         AS = this.GetComponent<AttackScript>();
 
@@ -59,6 +62,8 @@ public class PlayerMovementScript : MonoBehaviour
         animator = GetComponent<Animator>();
 
         colliderSize = cc.size;
+        canCombo = true;
+        canAttack = true;
     }
 
     // Update is called once per frame
@@ -143,8 +148,14 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void CheckInput()
     {
-        if (Input.GetButtonDown("Fire1")) Attack();
-        else if (Input.GetButtonDown("Fire2")) DoubleAttack();
+        if (Input.GetButtonDown("Fire1")) 
+        {
+            StartCoroutine(Attack());
+        }
+        else if (Input.GetButtonDown("Fire2"))
+        {
+            StartCoroutine(DoubleAttack()); 
+        }
         else
         {
             dirX = Input.GetAxisRaw("Horizontal");
@@ -153,14 +164,18 @@ public class PlayerMovementScript : MonoBehaviour
             if (dirX > 0f)
             {
                 gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                canCombo = false;
             }
             else if (dirX < 0)
             {
                 gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+                canCombo = false;
             }
 
             if (Input.GetButtonDown("Jump"))
             {
+                canCombo = false;
+
                 Jump();
             }
         }
@@ -184,11 +199,13 @@ public class PlayerMovementScript : MonoBehaviour
         {
             newVelocity.Set(dirX * moveSpeed, rb.velocity.y);
             rb.velocity = newVelocity;
-        } 
+            canCombo = false;
+        }
 
         // Check if the user if not mobing
-        if(rb.velocity.x == 0 && rb.velocity.y == 0){
+        if (rb.velocity.x == 0 && rb.velocity.y == 0){
             state = MovementState.idle;
+            canCombo = true;
         }
     }
 
@@ -206,18 +223,30 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
-    private void Attack()
+    private IEnumerator Attack()
     {
-        state = MovementState.attacking;
-        animator.SetInteger("state", (int)state);
-        AS.Attack();
+        if (canAttack)
+        {
+            canAttack = false;
+            state = MovementState.attacking;
+            animator.SetInteger("state", (int)state);
+            AS.Attack();
+        }
+        yield return new WaitForSeconds(1);
+        canAttack = true;
     }
 
-    private void DoubleAttack()
+    private IEnumerator DoubleAttack()
     {
-        state = MovementState.comboAttacking;
-        animator.SetInteger("state", (int)state);
-        AS.DoubleAttack();
+        if (canCombo)
+        {
+            canCombo = false;
+            Debug.Log("C-C-C-C-COMBOOOOO!");
+            state = MovementState.comboAttacking;
+            animator.SetInteger("state", (int)state);
+            AS.DoubleAttack();
+        }
+        yield return new WaitForSeconds(1);
     }
 
     private void IsGrounded()
