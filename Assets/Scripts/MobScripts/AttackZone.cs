@@ -6,6 +6,7 @@ public class AttackZone : MonoBehaviour
 {
     [SerializeField] float TimerForNextAttack;
     [SerializeField] float AttackCooldown;
+    [SerializeField] private AudioSource AttackSoundEffect;
 
     private GameObject parentGO;
     private Enemy EnemyScript;
@@ -57,6 +58,7 @@ public class AttackZone : MonoBehaviour
 
     public void Attack()
     {
+        AttackSoundEffect.Play();
         animator.SetTrigger("Attack");
         player.TakeDamage(EnemyScript.strength * 10);
     }

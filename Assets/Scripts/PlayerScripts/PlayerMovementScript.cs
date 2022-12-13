@@ -16,6 +16,11 @@ public class PlayerMovementScript : MonoBehaviour
     [SerializeField] private PhysicsMaterial2D noFriction;
     [SerializeField] private PhysicsMaterial2D fullFriction;
 
+    // SoundEffects
+    [SerializeField] private AudioSource JumpSoudEffect;
+    [SerializeField] private AudioSource AttackSoundEffect;
+    [SerializeField] private AudioSource RunSoudEffect;
+
     private Rigidbody2D rb;
     private Animator animator;
     private CapsuleCollider2D cc;
@@ -33,6 +38,7 @@ public class PlayerMovementScript : MonoBehaviour
     private bool isOnSlope;
     private bool canCombo;
     private bool canAttack;
+    private bool isAttacking;
 
     private Vector2 newVelocity;
     private Vector2 newForce;
@@ -148,11 +154,11 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void CheckInput()
     {
-        if (Input.GetButtonDown("Fire1")) 
+        if (Input.GetButtonDown("Fire1") && !isAttacking) 
         {
             StartCoroutine(Attack());
         }
-        else if (Input.GetButtonDown("Fire2"))
+        else if (Input.GetButtonDown("Fire2") && isNotMoving() && isGrounded && !isAttacking)
         {
             StartCoroutine(DoubleAttack()); 
         }
@@ -164,18 +170,15 @@ public class PlayerMovementScript : MonoBehaviour
             if (dirX > 0f)
             {
                 gameObject.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                canCombo = false;
             }
             else if (dirX < 0)
             {
                 gameObject.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-                canCombo = false;
             }
 
             if (Input.GetButtonDown("Jump"))
             {
-                canCombo = false;
-
+                JumpSoudEffect.Play();
                 Jump();
             }
         }
@@ -185,12 +188,14 @@ public class PlayerMovementScript : MonoBehaviour
     { 
         if (isGrounded && !isOnSlope && !isJumping)
         {
+            PlayRunningSound();
             state = MovementState.running;
             newVelocity.Set(dirX * moveSpeed, 0.0f);
             rb.velocity = newVelocity;
         }
         else if (isGrounded && isOnSlope && !isJumping)
         {
+            PlayRunningSound();
             state = MovementState.running;
             newVelocity.Set(moveSpeed * slopeNormalPerp.x * -dirX, moveSpeed * slopeNormalPerp.y * -dirX);
             rb.velocity = newVelocity;
@@ -199,13 +204,13 @@ public class PlayerMovementScript : MonoBehaviour
         {
             newVelocity.Set(dirX * moveSpeed, rb.velocity.y);
             rb.velocity = newVelocity;
-            canCombo = false;
         }
 
         // Check if the user if not mobing
         if (rb.velocity.x == 0 && rb.velocity.y == 0){
             state = MovementState.idle;
-            canCombo = true;
+            RunSoudEffect.Stop();
+            RunSoudEffect.Stop();
         }
     }
 
@@ -227,26 +232,33 @@ public class PlayerMovementScript : MonoBehaviour
     {
         if (canAttack)
         {
+            isAttacking = true;
+            AttackSoundEffect.Play();
             canAttack = false;
             state = MovementState.attacking;
             animator.SetInteger("state", (int)state);
             AS.Attack();
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.65f);
         canAttack = true;
+        isAttacking = false;
     }
 
     private IEnumerator DoubleAttack()
     {
         if (canCombo)
         {
+            isAttacking = true;
             canCombo = false;
+            AttackSoundEffect.Play();
             Debug.Log("C-C-C-C-COMBOOOOO!");
             state = MovementState.comboAttacking;
             animator.SetInteger("state", (int)state);
             AS.DoubleAttack();
         }
         yield return new WaitForSeconds(1);
+        canCombo = true;
+        isAttacking = false;
     }
 
     private void IsGrounded()
@@ -283,5 +295,18 @@ public class PlayerMovementScript : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(GroundCheck.position, isGroundedRadius);
+    }
+
+    private void PlayRunningSound()
+    {
+        if (!RunSoudEffect.isPlaying)
+        {
+            RunSoudEffect.Play();
+        }
+    }
+
+    private bool isNotMoving()
+    {
+        return (rb.velocity.x == 0 && rb.velocity.y == 0);
     }
 }
