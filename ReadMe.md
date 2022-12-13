@@ -12,7 +12,7 @@
 - Coroutines to limit how fast a player can attack.
 - Various AI behaviors, Including:
   - Player detection
-  - Persuing the player
+  - Pursuing the player
   - Attacking the player.
   - Patrolling an area.
 - Interactable/Destructable environment
